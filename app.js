@@ -74,6 +74,9 @@ const catchAsync = fn => {
 // 6. Setting up the routes
 
 app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.failure = req.flash('failure');
     next();
 });
 
@@ -86,13 +89,18 @@ app.get('/register', (req, res) => {
 app.post(
     '/register',
     catchAsync(async (req, res, next) => {
-        const { username, password } = req.body;
-        const newUser = new User({ username });
-        const registerUser = await User.register(newUser, password);
-        req.login(registerUser, function (err) {
-            if (err) return next(err);
-            res.redirect('/home');
-        });
+        try {
+            const { username, password } = req.body;
+            const newUser = new User({ username });
+            const registerUser = await User.register(newUser, password);
+            req.login(registerUser, function (err) {
+                if (err) return next(err);
+                res.redirect('/home');
+            });
+        } catch (err) {
+            req.flash('failure', `${err.message}`);
+            res.redirect('/register');
+        }
     })
 );
 
@@ -111,6 +119,14 @@ app.post(
         }
     )
 );
+
+app.post('/logout', (req, res, next) => {
+    req.logout(function (err) {
+        if (err) return next(err);
+        req.flash('success', "You've been logged out");
+        res.redirect('/login');
+    });
+});
 
 // 6.1 Error routes
 
