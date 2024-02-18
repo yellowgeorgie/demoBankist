@@ -23,7 +23,6 @@ app.engine('ejs', engine);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride('_method'));
-app.use(flash());
 
 const sessionConfig = {
     secret: 'thisisaterriblesecret',
@@ -36,6 +35,7 @@ const sessionConfig = {
 };
 
 app.use(session(sessionConfig));
+app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -54,6 +54,14 @@ main()
     .catch(err => console.log(`Database connection failed - ${err}`));
 
 // 4. Middleware (for import from a different file)
+
+const isLoggedIn = (req, res, next) => {
+    if (!req.isAuthenticated()) {
+        req.flash('failure', 'You need to log in!');
+        return res.redirect('/login');
+    }
+    next();
+};
 
 // 5. Setting up error handlers (import from a different file)
 
@@ -80,7 +88,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/home', (req, res, next) => res.render('home/home'));
+app.get('/home', isLoggedIn, (req, res, next) => res.render('home/home'));
+
+// 6.2 Setting up the user routes
 
 app.get('/register', (req, res) => {
     res.render('users/register');
@@ -104,31 +114,31 @@ app.post(
     })
 );
 
-app.get('/login', (req, res, err, next) => {
+app.get('/login', (req, res, next) => {
     res.render('users/login');
 });
 
 app.post(
     '/login',
-    passport.authenticate(
-        'local',
-        { failureFlash: true, failureRedirect: '/login' },
-        (req, res, next) => {
-            req.flash('success', 'Welcome, back!');
-            res.redirect('/home');
-        }
-    )
+    passport.authenticate('local', {
+        failureFlash: true,
+        failureRedirect: '/login',
+    }),
+    async (req, res) => {
+        req.flash('success', 'Welcome, back!');
+        res.redirect('/home');
+    }
 );
 
-app.post('/logout', (req, res, next) => {
+app.get('/logout', async (req, res, next) => {
     req.logout(function (err) {
         if (err) return next(err);
         req.flash('success', "You've been logged out");
-        res.redirect('/login');
+        return res.redirect('/login');
     });
 });
 
-// 6.1 Error routes
+// 6.3 Error routes
 
 app.all('*', (req, res, next) => {
     next(new appError(404, 'Page could not be found.'));
