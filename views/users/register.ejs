@@ -1,12 +1,35 @@
 <% layout("layouts/boilerplate") %>
 
-<form action="/register" method="post">
-    <input type="text" name="username" id="username" placeholder="username" />
-    <input
-        type="password"
-        name="password"
-        id="password"
-        placeholder="password"
-    />
-    <button type="submit">Register!</button>
-</form>
+<div class="d-flex justify-content-center mt-5">
+    <div class="card mb-3" style="max-width: 540px">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img
+                    src="/assets/purple-photo2.jpg"
+                    class="img-fluid rounded-start"
+                    alt="purplePhoto"
+                />
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">Register</h5>
+                    <form action="/register" method="post">
+                        <input
+                            type="text"
+                            name="username"
+                            id="username"
+                            placeholder="username"
+                        />
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="password"
+                        />
+                        <button type="submit" class="d-block">Register!</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

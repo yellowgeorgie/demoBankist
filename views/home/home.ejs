@@ -1,3 +1,22 @@
 <% layout("layouts/boilerplate.ejs") %>
 
-<h1>Bankist</h1>
+<div class="container">
+    <div style="color: white"><%= userTransaction.userId.username%></div>
+    <div style="color: white"><%= userTransaction.currency%></div>
+    <div style="color: white">
+        <%= userTransaction.movements.reduce((total, el) => total + el) %>
+    </div>
+</div>
+<div>
+    <form action="/home/loan" method="post">
+        <input type="number" id="loan" name="loan" />
+        <button type="submit">Loan</button>
+    </form>
+</div>
+<div>
+    <form action="/home/transfer" method="post">
+        <input type="number" id="transfer" name="transfer" />
+        <input type="text" id="username" name="username" required />
+        <button type="submit">Transfer</button>
+    </form>
+</div>

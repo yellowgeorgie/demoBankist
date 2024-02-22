@@ -1,0 +1,16 @@
+body {
+    height: 100vh;
+    background: linear-gradient(
+        125deg,
+        rgb(58, 0, 58),
+        purple,
+        rgb(254, 205, 114)
+    );
+    position: relative;
+}
+
+.alert {
+    width: 88%;
+    top: 10%;
+    /* left: 5%; */
+}

@@ -1,12 +1,10 @@
 <% layout("layouts/boilerplate") %>
 
-<form action="/login" method="post">
-    <input type="text" name="username" id="username" placeholder="username" />
-    <input
-        type="password"
-        name="password"
-        id="password"
-        placeholder="password"
-    />
-    <button type="submit">Login</button>
-</form>
+<div class="container-fluid">
+    <div class="row text-center pt-5 text-white d-flex align-items-center">
+        <h1 class="pb-3">YOU NEED TO LOG IN</h1>
+        <p>
+            If you don't have an account, <a href="/register">register here</a>.
+        </p>
+    </div>
+</div>
