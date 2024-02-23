@@ -1,22 +1,132 @@
 <% layout("layouts/boilerplate.ejs") %>
 
-<div class="container">
-    <div style="color: white"><%= userTransaction.userId.username%></div>
-    <div style="color: white"><%= userTransaction.currency%></div>
-    <div style="color: white">
-        <%= userTransaction.movements.reduce((total, el) => total + el) %>
+<div class="container col-7 d-flex align-items-center mt-5">
+    <div class="row">
+        <div class="card col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-text">
+                        <div><%= userTransaction.currency%></div>
+                        <%= userTransaction.movements[2] %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-6 ms-1">
+            <div class="card card-transfer">
+                <div class="card-body p-4">
+                    <h5 class="card-title fs-5 mb-4">Transfer Money</h5>
+                    <form
+                        action="/home/transfer"
+                        method="post"
+                        class="row row-cols-auto g-2 align-items-center"
+                    >
+                        <div class="col-4">
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                class="form-control"
+                                required
+                            />
+                            <div id="usernameHelp" class="form-text">
+                                Transfer to
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <input
+                                type="number"
+                                id="transfer"
+                                name="transfer"
+                                class="form-control"
+                            />
+                            <div id="amountHelp" class="form-text">Amount</div>
+                        </div>
+                        <div class="col-4">
+                            <button
+                                type="submit"
+                                class="btn btn-light ps-4 pe-4"
+                            >
+                                →
+                            </button>
+                            <div id="sendHelp" class="form-text">Send</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card card-loan mt-2">
+                <div class="card-body p-4">
+                    <h5 class="card-title fs-5 mb-4">Loan</h5>
+                    <form
+                        action="/home/loan"
+                        method="post"
+                        class="row row-cols-auto g-2 align-items-center"
+                    >
+                        <div class="col-6">
+                            <input
+                                type="number"
+                                id="loan"
+                                name="loan"
+                                class="form-control"
+                                required
+                            />
+                            <div id="amountHelp" class="form-text">Amount</div>
+                        </div>
+                        <div class="col-6">
+                            <button
+                                type="submit"
+                                class="btn btn-light ps-4 pe-4"
+                            >
+                                →
+                            </button>
+                            <div id="sendHelp" class="form-text">Send</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card card-delete mt-2">
+                <div class="card-body p-4">
+                    <h5 class="card-title fs-5 mb-4">Delete account</h5>
+                    <form
+                        action="/home/transfer"
+                        method="post"
+                        class="row row-cols-auto g-2 align-items-center"
+                    >
+                        <div class="col-4">
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                class="form-control"
+                            />
+                            <div id="usernameHelp" class="form-text">
+                                Confirm user
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <input
+                                type="text"
+                                id="password"
+                                name="password"
+                                class="form-control"
+                                required
+                            />
+                            <div id="passwordHelp" class="form-text">
+                                Confirm PW
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <button
+                                type="submit"
+                                class="btn btn-light ps-4 pe-4"
+                            >
+                                →
+                            </button>
+                            <div id="sendHelp" class="form-text">Send</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-<div>
-    <form action="/home/loan" method="post">
-        <input type="number" id="loan" name="loan" />
-        <button type="submit">Loan</button>
-    </form>
-</div>
-<div>
-    <form action="/home/transfer" method="post">
-        <input type="number" id="transfer" name="transfer" />
-        <input type="text" id="username" name="username" required />
-        <button type="submit">Transfer</button>
-    </form>
 </div>

@@ -1,16 +1,33 @@
-body {
-    height: 100vh;
-    background: linear-gradient(
-        125deg,
-        rgb(58, 0, 58),
-        purple,
-        rgb(254, 205, 114)
-    );
-    position: relative;
-}
-
 .alert {
     width: 88%;
     top: 10%;
     /* left: 5%; */
+}
+
+body {
+    height: 100vh;
+    /* background-color: rgb(236, 236, 236); */
+    /* background: linear-gradient(
+        125deg,
+        rgb(58, 0, 58),
+        purple,
+        rgb(254, 205, 114)
+    ); */
+    position: relative;
+}
+
+.card-transfer {
+    background: linear-gradient(165deg, rgb(252, 212, 51), rgb(235, 153, 0));
+}
+
+.card-loan {
+    background: linear-gradient(165deg, rgb(0, 227, 0), rgb(1, 166, 1));
+}
+
+.card-delete {
+    background: linear-gradient(165deg, rgb(253, 98, 98), rgb(255, 45, 45));
+}
+
+input {
+    opacity: 0.5;
 }
