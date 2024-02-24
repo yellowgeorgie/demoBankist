@@ -14,10 +14,10 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
-const Transaction = require('./models/transaction');
 const userRoute = require('./routes/userRoute');
 const transactionRoute = require('./routes/transactionRoute');
 const { isLoggedIn } = require('./middleware/middlewares');
+const appError = require('./utilities/appError');
 
 // 2. Setting up the configurations
 
@@ -58,18 +58,6 @@ main()
     .then(() => console.log('Database connected!'))
     .catch(err => console.log(`Database connection failed - ${err}`));
 
-// 4. Middleware (for import from a different file)
-
-// 5. Setting up error handlers (import from a different file)
-
-class appError extends Error {
-    constructor(statusCode, message) {
-        super();
-        this.statusCode = statusCode;
-        this.message = message;
-    }
-}
-
 // 6. Setting up the routes
 
 app.use((req, res, next) => {
@@ -79,68 +67,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// 6.1 Home route
-
-// app.get(
-//     '/home',
-//     isLoggedIn,
-//     catchAsync(async (req, res, next) => {
-//         const userId = req.user.id;
-//         let userTransaction = await Transaction.findOne({ userId });
-//         if (!userTransaction) {
-//             const newUserTransaction = new Transaction({ userId });
-//             newUserTransaction.movements.push(500);
-//             await newUserTransaction.save();
-//             userTransaction = newUserTransaction;
-//         }
-//         res.render('home/home', { userTransaction });
-//     })
-// );
-
-// app.post(
-//     '/home/transfer',
-//     isLoggedIn,
-//     catchAsync(async (req, res, err, next) => {
-//         const { username, transfer } = req.body;
-//         const fromTransaction = await Transaction.findOne({
-//             userId: req.user.id,
-//         });
-//         const toUser = await User.findOne({ username });
-//         const toTransaction = await Transaction.findOne({ userId: toUser.id });
-//         if (!toUser || req.user.id === toTransaction.userId.toString()) {
-//             req.flash('error', 'Invalid user, try again');
-//             return res.redirect('/home');
-//         }
-//         toTransaction.movements.push(transfer);
-//         fromTransaction.movements.push(transfer * -1);
-//         req.flash(
-//             'success',
-//             `You've successfully transferred an amount of ${transfer} to ${username}`
-//         );
-//         await fromTransaction.save();
-//         await toTransaction.save();
-//         res.redirect('/home');
-//     })
-// );
-
-// app.post(
-//     '/home/loan',
-//     isLoggedIn,
-//     catchAsync(async (req, res, err, next) => {
-//         const userId = req.user.id;
-//         const { loan } = req.body;
-//         const transaction = await Transaction.findOne({ userId });
-//         transaction.movements.push(loan);
-//         await transaction.save();
-//         res.redirect('/home');
-//     })
-// );
-
-// app.delete('/home/delete', isLoggedIn, (req, res, next) => {
-//     const { username, password } = req.body;
-// });
-
-// 6.2 Setting up the user routes
+// 6.1 Setting up the routes
 
 app.use('/home', isLoggedIn, transactionRoute);
 app.use('/', userRoute);
