@@ -1,5 +1,11 @@
 'use strict';
 
+// 0. Process dotenv setup
+
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 // 1. Setting up the requirements
 
 const express = require('express');
@@ -30,7 +36,7 @@ app.use(express.json());
 app.use(methodOverride('_method'));
 
 const sessionConfig = {
-    secret: 'thisisaterriblesecret',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
