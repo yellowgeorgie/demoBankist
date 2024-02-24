@@ -17,23 +17,20 @@
                 <% if (!currentUser) { %>
                 <form class="d-flex ms-auto" action="/login" method="post">
                     <input
-                        class="form-control me-2"
+                        class="form-control me-2 border-secondary text-black"
                         type="text"
                         placeholder="Username"
                         aria-label="Login"
                         name="username"
                     />
                     <input
-                        class="form-control me-2"
+                        class="form-control me-2 border-secondary text-black"
                         type="password"
                         placeholder="Password"
                         aria-label="Login"
                         name="password"
                     />
-                    <button
-                        class="btn btn-outline-dark text-dark"
-                        type="submit"
-                    >
+                    <button class="btn btn-outline-success" type="submit">
                         Login
                     </button>
                 </form>

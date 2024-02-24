@@ -1,18 +1,56 @@
 <% layout("layouts/boilerplate.ejs") %>
 
-<div class="container col-7 d-flex align-items-center mt-5">
+<% let curr = userTransaction.currency.toUpperCase() %>
+<% let remainSum = userTransaction.movements.reduce((total, el) => total + el).toLocaleString() %>
+<% let totalIn = userTransaction.movements.reduce((total, el) => el > 0 ? total + el : total, 0).toLocaleString() %>
+<% let totalOut = userTransaction.movements.reduce((total, el) => el < 0 ? total + Math.abs(el) : total, 0).toLocaleString() %>
+
+<div class="container col-8 d-flex flex-column align-items-center mt-4">
+
+<!-- Total balance display -->
+
+    <div class="row d-flex justify-content-between col-12 mb-2">
+        <div class="col-5 text-start">
+            <h3 class="mb-0">Current Balance</h3>
+            <div id="usernameHelp" class="form-text mt-0"><%= "As of " + new Date(Date.now()).toString().substring(0, 25) %></div>
+        </div>
+        <div class="col-5 text-end">
+            <h1 class="display-5"><%= remainSum %> <%= curr %></h1>
+        </div>
+    </div>
+
+<!-- Transactions display and modules -->
+
     <div class="row">
-        <div class="card col-6">
-            <div class="card">
-                <div class="card-body">
-                    <div class="card-text">
-                        <div><%= userTransaction.currency%></div>
-                        <%= userTransaction.movements[2] %>
+
+<!-- Transactions display -->
+
+        <div
+            data-bs-smooth-scroll="true"
+            class="card col-6 scroll"
+            tabindex="0"
+        >
+            <% for (let i = userTransaction.movements.length - 1; i >= 0; i--) { %>
+            <% let movement = userTransaction.movements[i] %>
+                <div class="card border border-0">
+                    <div class="card-body pt-4 pb-4 d-flex justify-content-between <%= i === 0 ? " " : " border-bottom" %>">
+                        <span class="badge text-bg-<%=movement<0?"danger":"success"%> p-2">
+                            <%= i + 1 + " "%><%=movement<0?"WITHDRAWAL":"DEPOSIT"%>
+                        </span>
+                        <div class="card-text transactionAmount">
+                            <%= Math.abs(movement).toLocaleString() %> <%= curr %>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <% } %>
         </div>
+
+<!-- Transaction modules -->
+    
         <div class="row col-6 ms-1">
+
+<!-- Transfer money module -->
+
             <div class="card card-transfer">
                 <div class="card-body p-4">
                     <h5 class="card-title fs-5 mb-4">Transfer Money</h5>
@@ -54,6 +92,9 @@
                     </form>
                 </div>
             </div>
+
+<!-- Loan module -->
+
             <div class="card card-loan mt-2">
                 <div class="card-body p-4">
                     <h5 class="card-title fs-5 mb-4">Loan</h5>
@@ -84,11 +125,14 @@
                     </form>
                 </div>
             </div>
+
+<!-- Delete account module -->
+            
             <div class="card card-delete mt-2">
                 <div class="card-body p-4">
                     <h5 class="card-title fs-5 mb-4">Delete account</h5>
                     <form
-                        action="/home/transfer"
+                        action="/home/delete?_method=DELETE"
                         method="post"
                         class="row row-cols-auto g-2 align-items-center"
                     >
@@ -129,4 +173,37 @@
             </div>
         </div>
     </div>
+
+<!-- Bottom display -->
+
+    <div class="row col-12 mt-3">
+        <div class="col-2 footerNotes">In  <span class="text-success"><%= totalIn %> <%= curr %></span></div>
+        <div class="col-3 footerNotes">Out  <span class="text-danger"><%= totalOut %> <%= curr %></span></div>
+        <div class="col-2 footerNotes">Interest</div>
+        <div class="col-2 footerNotes">Sort</div>
+        <div class="col-3 footerNotes">You will be logged out <span id="timer" class="text-black fs-5">05:00</span></div>
+    </div>
 </div>
+
+<!-- Countdown timer for the session -->
+
+<script>
+    function timer() {
+    const countdown = new Date().getTime() + 1000 * 60 * 5;
+    const x = setInterval(() => {
+        let currentTime = new Date().getTime();
+        let distance = countdown - currentTime;
+
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000) + 1;
+
+        document.querySelector('#timer').innerText = `0${minutes}:${seconds >= 10 ? "" : "0"}${seconds}`;
+
+        if (distance < 0) {
+            clearInterval(x);
+            document.querySelector('#timer').innerText = `Expired`;
+        }
+    }, 1000);
+    }
+    timer();
+</script>
