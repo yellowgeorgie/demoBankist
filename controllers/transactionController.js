@@ -1,7 +1,11 @@
 const Transaction = require('../models/transaction');
 const User = require('../models/user');
 const catchAsync = require('../utilities/catchAsync');
-const transactionJoiSchema = require('../utilities/transactionJoi');
+
+const timestamper = () => {
+    let timestamp = new Date();
+    return timestamp.toString().substring(0, 25).trim();
+};
 
 module.exports.getHome = catchAsync(async (req, res, next) => {
     const userId = req.user.id;
@@ -9,6 +13,7 @@ module.exports.getHome = catchAsync(async (req, res, next) => {
     if (!userTransaction) {
         userTransaction = new Transaction({ userId });
         userTransaction.movements.push(500);
+        userTransaction.timestamps.push(timestamper());
         await userTransaction.save();
     }
     res.render('home/home', { userTransaction });
@@ -19,38 +24,18 @@ module.exports.postTransfer = catchAsync(async (req, res, err, next) => {
     const fromTransaction = await Transaction.findOne({
         userId: req.user.id,
     });
-    const remainBal = fromTransaction.movements.reduce(
-        (total, el) => total + el
-    );
-    if (remainBal < transfer) {
-        req.flash(
-            'error',
-            "You're trying to transfer more than what's in your account"
-        );
-        return res.redirect('/home');
-    }
-
     const toUser = await User.findOne({ username });
-    if (!toUser) {
-        req.flash('error', 'Invalid user, try again');
-        return res.redirect('/home');
-    }
-
     const toTransaction = await Transaction.findOne({ userId: toUser.id });
-    if (req.user.id === toTransaction.userId.toString()) {
-        req.flash('error', 'Invalid user, try again');
-        return res.redirect('/home');
-    }
-
     toTransaction.movements.push(transfer);
+    toTransaction.timestamps.push(timestamper());
     fromTransaction.movements.push(transfer * -1);
+    fromTransaction.timestamps.push(timestamper());
+    await fromTransaction.save();
+    await toTransaction.save();
     req.flash(
         'success',
         `You've successfully transferred an amount of ${transfer} to ${username}`
     );
-
-    await fromTransaction.save();
-    await toTransaction.save();
     res.redirect('/home');
 });
 
@@ -59,6 +44,7 @@ module.exports.postLoan = catchAsync(async (req, res, err, next) => {
     const { loan } = req.body;
     const transaction = await Transaction.findOne({ userId });
     transaction.movements.push(Number(loan));
+    transaction.timestamps.push(timestamper());
     await transaction.save();
     res.redirect('/home');
 });

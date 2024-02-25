@@ -1,6 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { validateLoan, validateTransfer } = require('../middleware/middlewares');
+
+const {
+    validateJoiLoan,
+    validateJoiTransfer,
+    validateUserTransfer,
+    validateBalTransfer,
+} = require('../middleware/middlewares');
+
 const {
     getHome,
     postTransfer,
@@ -9,8 +16,17 @@ const {
 } = require('../controllers/transactionController');
 
 router.route('/').get(getHome);
-router.route('/transfer').post(validateTransfer, postTransfer);
-router.route('/loan').post(validateLoan, postLoan);
+
+router
+    .route('/transfer')
+    .post(
+        validateJoiTransfer,
+        validateUserTransfer,
+        validateBalTransfer,
+        postTransfer
+    );
+router.route('/loan').post(validateJoiLoan, postLoan);
+
 router.route('/delete').delete(deleteUser);
 
 module.exports = router;

@@ -34,11 +34,13 @@
         >
             <% for (let i = userTransaction.movements.length - 1; i >= 0; i--) { %>
             <% let movement = userTransaction.movements[i] %>
+            <% let stamp = userTransaction.timestamps[i] %>
                 <div class="card border border-0">
                     <div class="card-body pt-4 pb-4 d-flex justify-content-between <%= i === 0 ? " " : " border-bottom" %>">
                         <span class="badge text-bg-<%=movement<0?"danger":"success"%> p-2">
                             <%= i + 1 + " "%><%=movement<0?"WITHDRAWAL":"DEPOSIT"%>
                         </span>
+                        <span class="me-auto ms-2 timestamp"><%= stamp %></span>
                         <div class="card-text transactionAmount">
                             <%= Math.abs(movement).toLocaleString() %> <%= curr %>
                         </div>

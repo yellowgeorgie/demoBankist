@@ -17,6 +17,7 @@ const transactionSchema = new Schema({
             required: true,
         },
     ],
+    timestamps: [{ type: String }],
 });
 
 const Transaction = model('Transaction', transactionSchema);
