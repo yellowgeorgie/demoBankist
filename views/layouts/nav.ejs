@@ -42,7 +42,11 @@
                         >
                     </li>
                 </ul>
-                <form class="d-flex" action="/logout" method="get">
+                <form
+                    class="d-flex"
+                    action="/logout?_method=DELETE"
+                    method="post"
+                >
                     <button class="btn btn-outline-danger" type="submit">
                         Logout
                     </button>

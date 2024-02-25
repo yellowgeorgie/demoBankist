@@ -6,7 +6,7 @@ const {
     postRegister,
     getLogin,
     postLogin,
-    getLogout,
+    deleteLogin,
 } = require('../controllers/userController');
 
 router.route('/register').get(getRegister).post(postRegister);
@@ -22,6 +22,6 @@ router
         postLogin
     );
 
-router.route('/logout').get(getLogout);
+router.route('/logout').delete(deleteLogin);
 
 module.exports = router;

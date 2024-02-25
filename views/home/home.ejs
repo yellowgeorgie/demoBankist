@@ -130,48 +130,39 @@
             
             <div class="card card-delete mt-2">
                 <div class="card-body p-4">
-                    <h5 class="card-title fs-5 mb-4">Delete account</h5>
-                    <form
-                        action="/home/delete?_method=DELETE"
-                        method="post"
-                        class="row row-cols-auto g-2 align-items-center"
-                    >
+                    <h5 class="card-title fs-5 mb-4">Close account</h5>
+                    <div class="row row-cols-auto g-2 align-items-center">
                         <div class="col-4">
-                            <input
-                                type="text"
-                                id="username"
-                                name="username"
-                                class="form-control"
-                            />
-                            <div id="usernameHelp" class="form-text">
-                                Confirm user
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <input
-                                type="text"
-                                id="password"
-                                name="password"
-                                class="form-control"
-                                required
-                            />
-                            <div id="passwordHelp" class="form-text">
-                                Confirm PW
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <button
-                                type="submit"
-                                class="btn btn-light ps-4 pe-4"
-                            >
+                            <button type="button" class="btn btn-light ps-4 pe-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                 →
                             </button>
-                            <div id="sendHelp" class="form-text">Send</div>
+                            <div id="sendHelp" class="form-text">Confirm?</div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Closing accounts</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Are you sure you would like to close your account?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return</button>
+            <form action="/home/delete?_method=DELETE" method="post">
+                <button type="submit" class="btn btn-danger">Confirm</button>
+            </form>
+        </div>
+        </div>
+    </div>
     </div>
 
 <!-- Bottom display -->

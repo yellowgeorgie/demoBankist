@@ -5,12 +5,12 @@ const {
     getHome,
     postTransfer,
     postLoan,
-    deleteHome,
+    deleteUser,
 } = require('../controllers/transactionController');
 
 router.route('/').get(getHome);
 router.route('/transfer').post(postTransfer);
 router.route('/loan').post(postLoan);
-router.route('/delete').post(deleteHome);
+router.route('/delete').delete(deleteUser);
 
 module.exports = router;

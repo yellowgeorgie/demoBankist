@@ -1,3 +1,5 @@
+const Transaction = require('../models/transaction');
+const User = require('../models/user');
 const catchAsync = require('../utilities/catchAsync');
 
 module.exports.getRegister = (req, res) => {
@@ -25,7 +27,7 @@ module.exports.postLogin = catchAsync(async (req, res) => {
     res.redirect('/home');
 });
 
-module.exports.getLogout = catchAsync(async (req, res, next) => {
+module.exports.deleteLogin = catchAsync(async (req, res, next) => {
     req.logout(function (err) {
         if (err) return next(err);
         req.flash('success', "You've been logged out");

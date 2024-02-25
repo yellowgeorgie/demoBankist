@@ -6,10 +6,9 @@ module.exports.getHome = catchAsync(async (req, res, next) => {
     const userId = req.user.id;
     let userTransaction = await Transaction.findOne({ userId });
     if (!userTransaction) {
-        const newUserTransaction = new Transaction({ userId });
-        newUserTransaction.movements.push(500);
-        await newUserTransaction.save();
-        userTransaction = newUserTransaction;
+        userTransaction = new Transaction({ userId });
+        userTransaction.movements.push(500);
+        await userTransaction.save();
     }
     res.render('home/home', { userTransaction });
 });
@@ -63,6 +62,13 @@ module.exports.postLoan = catchAsync(async (req, res, err, next) => {
     res.redirect('/home');
 });
 
-module.exports.deleteHome = catchAsync(async (req, res, next) => {
-    const { username, password } = req.body;
+module.exports.deleteUser = catchAsync(async (req, res, err, next) => {
+    const userId = req.user.id;
+    req.logout(async function (err) {
+        if (err) return next(err);
+        await Transaction.findOneAndDelete({ userId: userId });
+        await User.findByIdAndDelete(userId);
+        req.flash('success', 'You have deleted your account.');
+        return res.redirect('/login');
+    });
 });
