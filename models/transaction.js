@@ -15,7 +15,6 @@ const transactionSchema = new Schema({
         {
             type: Number,
             required: true,
-            min: [0, 'Must not be lower than 0'],
         },
     ],
 });

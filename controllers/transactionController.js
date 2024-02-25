@@ -1,6 +1,7 @@
 const Transaction = require('../models/transaction');
 const User = require('../models/user');
 const catchAsync = require('../utilities/catchAsync');
+const transactionJoiSchema = require('../utilities/transactionJoi');
 
 module.exports.getHome = catchAsync(async (req, res, next) => {
     const userId = req.user.id;
@@ -57,7 +58,7 @@ module.exports.postLoan = catchAsync(async (req, res, err, next) => {
     const userId = req.user.id;
     const { loan } = req.body;
     const transaction = await Transaction.findOne({ userId });
-    transaction.movements.push(loan);
+    transaction.movements.push(Number(loan));
     await transaction.save();
     res.redirect('/home');
 });

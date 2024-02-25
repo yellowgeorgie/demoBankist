@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { isLoggedIn } = require('../middleware/middlewares');
+const { validateLoan, validateTransfer } = require('../middleware/middlewares');
 const {
     getHome,
     postTransfer,
@@ -9,8 +9,8 @@ const {
 } = require('../controllers/transactionController');
 
 router.route('/').get(getHome);
-router.route('/transfer').post(postTransfer);
-router.route('/loan').post(postLoan);
+router.route('/transfer').post(validateTransfer, postTransfer);
+router.route('/loan').post(validateLoan, postLoan);
 router.route('/delete').delete(deleteUser);
 
 module.exports = router;
