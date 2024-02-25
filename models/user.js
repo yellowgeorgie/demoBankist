@@ -9,12 +9,6 @@ const userSchema = new Schema({
 
 userSchema.plugin(passportLocalMongoose);
 
-// userSchema.post("findOneAndDelete", async function (transaction) {
-//     if (transaction) {
-
-//     }
-// });
-
 const User = model('User', userSchema);
 
 module.exports = User;
