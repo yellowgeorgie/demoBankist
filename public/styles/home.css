@@ -6,6 +6,7 @@
 body {
     height: 100vh;
     position: relative;
+    transition: all ease-in 500ms;
 }
 
 .scroll {
