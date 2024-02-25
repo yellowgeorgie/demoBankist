@@ -11,7 +11,13 @@ const transactionSchema = new Schema({
         enum: ['usd', 'eu'],
         default: 'usd',
     },
-    movements: [Number],
+    movements: [
+        {
+            type: Number,
+            required: true,
+            min: [0, 'Must not be lower than 0'],
+        },
+    ],
 });
 
 const Transaction = model('Transaction', transactionSchema);

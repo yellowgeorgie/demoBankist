@@ -1,5 +1,7 @@
 <% layout("layouts/boilerplate.ejs") %>
 
+<!-- Testing if EJS can handle variable declarations beforehand -->
+
 <% let curr = userTransaction.currency.toUpperCase() %>
 <% let remainSum = userTransaction.movements.reduce((total, el) => total + el).toLocaleString() %>
 <% let totalIn = userTransaction.movements.reduce((total, el) => el > 0 ? total + el : total, 0).toLocaleString() %>
@@ -77,6 +79,8 @@
                                 id="transfer"
                                 name="transfer"
                                 class="form-control"
+                                required
+                                min="0"
                             />
                             <div id="amountHelp" class="form-text">Amount</div>
                         </div>
@@ -110,6 +114,7 @@
                                 name="loan"
                                 class="form-control"
                                 required
+                                min="0"
                             />
                             <div id="amountHelp" class="form-text">Amount</div>
                         </div>
@@ -144,7 +149,8 @@
         </div>
     </div>
 
-    <!-- Modal -->
+<!-- Confirmation for deletion -->
+
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
