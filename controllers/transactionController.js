@@ -12,7 +12,8 @@ module.exports.getHome = catchAsync(async (req, res, next) => {
     let userTransaction = await Transaction.findOne({ userId });
     if (!userTransaction) {
         userTransaction = new Transaction({ userId });
-        userTransaction.movements.push(500);
+        userTransaction.movements.push(500 * 0.988);
+        userTransaction.interests.push(500 * 0.012);
         userTransaction.timestamps.push(timestamper());
         await userTransaction.save();
     }
@@ -43,7 +44,8 @@ module.exports.postLoan = catchAsync(async (req, res, err, next) => {
     const userId = req.user.id;
     const { loan } = req.body;
     const transaction = await Transaction.findOne({ userId });
-    transaction.movements.push(Number(loan));
+    transaction.movements.push(Number(loan * 0.988));
+    transaction.interests.push(Number(loan) * 0.012);
     transaction.timestamps.push(timestamper());
     await transaction.save();
     res.redirect('/home');

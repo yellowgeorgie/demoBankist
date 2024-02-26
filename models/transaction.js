@@ -17,6 +17,11 @@ const transactionSchema = new Schema({
             required: true,
         },
     ],
+    interests: [
+        {
+            type: Number,
+        },
+    ],
     timestamps: [{ type: String }],
 });
 

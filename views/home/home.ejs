@@ -6,6 +6,7 @@
 <% let remainSum = userTransaction.movements.reduce((total, el) => total + el).toLocaleString() %>
 <% let totalIn = userTransaction.movements.reduce((total, el) => el > 0 ? total + el : total, 0).toLocaleString() %>
 <% let totalOut = userTransaction.movements.reduce((total, el) => el < 0 ? total + Math.abs(el) : total, 0).toLocaleString() %>
+<% let totalInterest = userTransaction.interests.reduce((total, el) => el + total).toLocaleString() %>
 
 <div class="container col-8 d-flex flex-column align-items-center mt-4">
 
@@ -176,11 +177,11 @@
 <!-- Bottom display -->
 
     <div class="row col-12 mt-3">
-        <div class="col-2 footerNotes">In  <span class="text-success"><%= totalIn %> <%= curr %></span></div>
-        <div class="col-3 footerNotes">Out  <span class="text-danger"><%= totalOut %> <%= curr %></span></div>
-        <div class="col-2 footerNotes">Interest</div>
-        <div class="col-2 footerNotes">Sort</div>
-        <div class="col-3 footerNotes">You will be logged out in <span id="timer" class="text-black fs-5">05:00</span></div>
+        <div class="col-2 footerNotes">In<span class="text-success ps-1"><%= totalIn %> <%= curr %></span></div>
+        <div class="col-2 footerNotes">Out<span class="text-danger ps-1"><%= totalOut %> <%= curr %></span></div>
+        <div class="col-2 footerNotes">Interest<span class="text-success ps-1"><%= totalInterest %> <%= curr %></span></div>
+        <div class="col-2 footerNotes">Sort<span class="text-primary ps-1">↑</span></div>
+        <div class="col-4 footerNotes text-end">You will be logged out in <span id="timer" class="text-black fs-5 ps-1">05:00</span></div>
     </div>
 </div>
 
@@ -198,11 +199,13 @@
 
         document.querySelector('#timer').innerText = `0${minutes}:${seconds >= 10 ? "" : "0"}${seconds}`;
 
-        if (distance < 0) {
-            clearInterval(x);
-            document.querySelector('#timer').innerText = `Expired`;
-        }
-    }, 1000);
+            if (distance < 0) {
+                clearInterval(x);
+                document.querySelector('#timer').innerText = `Expired`;
+            }
+        }, 1000);
     }
     timer();
+
+
 </script>
